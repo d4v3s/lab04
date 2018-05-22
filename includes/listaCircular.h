@@ -109,6 +109,7 @@ template <typename T>
 bool ListaCircular<T>::RemoveNoInicio() {
 	if (this->cabeca==nullptr) return false;
 	cabeca = cabeca->getNext();
+	cauda->setNext(cabeca);
 	this->tamanho--;
 	return true;
 }
@@ -117,8 +118,8 @@ template <typename T>
 bool ListaCircular<T>::RemoveNoFinal() {
 	if (this->cabeca==nullptr) return false;
 
-	if (this->cabeca->getNext()==this->cauda) {
-		this->cabeca = this->cauda;
+	if (this->cabeca->getNext()==this->cabeca) {
+		//this->cabeca = this->cauda;
 		this->tamanho--;
 		return true;
 	}
