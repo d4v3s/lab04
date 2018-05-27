@@ -19,7 +19,7 @@ int Programa2::programa2Automatico(){
 	cout << "-Resultado: " << result << endl;	
 
 	expressao = "4 6 + 2 * 10 /";
-	cout << ">Operação realizada: " << expressao << endl;
+	cout << "-Operação realizada: " << expressao << endl;
 	result = calc->resolver(expressao);
 	
 	cout << "-Resultado: " << result << endl;	
@@ -33,12 +33,12 @@ int Programa2::programa2Manual(){
 	string expressao;
 
 	cout << "-Exemplo: '5 3 * 2 * 10 /'" << endl;
-	cout << "Por favor insira uma expressão:";
+	cout << ">Por favor insira uma expressão:";
 	
 	cin.ignore();
 	getline(cin, expressao);
 
-	cout << ">Operação realizada: " << expressao << endl;
+	cout << "-Operação realizada: " << expressao << endl;
 	int result = calc->resolver(expressao);
 	
 	cout << "-Resultado: " << result << endl;

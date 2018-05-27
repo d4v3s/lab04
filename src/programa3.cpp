@@ -4,8 +4,8 @@
 using namespace std;
 
 Programa3::Programa3(){
-	listLigCircInt = make_shared<ListLigCirc<int>>();
-	listLigCircStr = make_shared<ListLigCirc<string>>();
+	listLigCircStr = make_shared<ListaCircular<string>>();
+	listLigCircInt = make_shared<ListaCircular<int>>();
 }
 
 Programa3::~Programa3(){
@@ -49,6 +49,76 @@ int Programa3::programa3FilaAutomatico(){
 }
 
 int Programa3::programa3ListaManual(){
+	short op;
+	int indice;
+	string valor;
+
+	do{
+		cout << endl;
+		cout << "Digite '1' para inserir no inicio da fila" << endl;
+		cout << "Digite '2' para inserir no final da fila" << endl;
+		cout << "Digite '3' para inserir especificando o índice na fila" << endl;
+		cout << "Digite '4' para remover no inicio da fila" << endl;
+		cout << "Digite '5' para remover no fim da fila" << endl;
+		cout << "Digite '6' para remover especificando o índice na fila" << endl;
+		cout << "Digite '7' para exibir a lista" << endl;
+		cout << "Digite '8' para voltar" << endl;
+		cout << endl;
+		cout << ">Opção: ";
+		cin >> op;
+		cout << endl;
+
+		switch(op){
+			case 1:
+				system("clear");
+				cout << "Por favor insira algo: ";
+				cin.ignore();
+				getline(cin, valor);
+				listLigCircStr->InsereNoInicio(valor);
+			break;
+			case 2:
+				system("clear");
+				cout << "Por favor insira algo: ";
+				cin.ignore();
+				getline(cin, valor);
+				listLigCircStr->InsereNoFinal(valor);
+			break;
+			case 3:
+				system("clear");
+				cout << "Informe o índice da posição na fila: ";
+				cin >> indice;
+				cout << "Por favor insira algo: ";
+				cin.ignore();
+				getline(cin, valor);
+				listLigCircStr->InsereNaPosicao(indice, valor);
+			break;
+			case 4:
+				system("clear");				
+				listLigCircStr->RemoveNoInicio();
+			break;
+			case 5:
+				system("clear");
+				listLigCircStr->RemoveNoFinal();
+			break;
+			case 6:
+				system("clear");
+				cout << "Informe o índice da posição na fila: ";
+				cin >> indice;
+				listLigCircStr->RemoveNaPosicao(indice);
+				break;
+			case 7:
+				system("clear");
+				cout << *listLigCircStr;
+				break;
+			case 8:
+				system("clear");
+			}
+
+		if(op != 1 && op != 2 && op != 3 && op != 4 && op != 5 && op != 6 && op != 7 && op != 8)
+			cout << "Operação inválida" << endl;
+
+	}while(op != 8);
+
 	return 0;
 }
 
