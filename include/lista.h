@@ -1,0 +1,170 @@
+#ifndef LISTA_H
+#define LISTA_H
+
+#include <iostream>
+#include <memory>
+#include "node.h"
+
+using namespace std;
+
+/* Implementacao da classe ListaLigada */
+
+/* Para permitir sobrecarregar o operador de insercao
+   numa classe template como friend eh preciso adicionar
+   o trecho de codigo a seguir */
+template <typename T> class ListaLigada; // Declaracao antecipada da classe
+template <typename T> // Definicao antecipada do template para o operador de insercao
+std::ostream& operator<<( std::ostream&, ListaLigada<T> const & );
+// --
+
+template <typename T>
+class ListaLigada {
+private:
+	shared_ptr<Node<T>> cabeca;
+	shared_ptr<Node<T>> cauda;
+	int tamanho;
+public:
+	ListaLigada();
+	~ListaLigada();
+	virtual bool InsereNoInicio(T _valor);
+	virtual bool InsereNoFinal(T _valor);
+	virtual bool InsereNaPosicao(int pos, T _valor);
+	virtual bool RemoveNoInicio();
+	virtual bool RemoveNoFinal();
+	virtual bool RemoveNaPosicao(int pos);
+	
+	bool vazia();
+	int size();
+
+	friend std::ostream& operator<< <T>( std::ostream&, ListaLigada<T> const &l);
+};
+
+template <typename T>
+ListaLigada<T>::ListaLigada(): cabeca(nullptr), cauda(nullptr), tamanho(0) {}
+
+template <typename T>
+ListaLigada<T>::~ListaLigada() {
+	while (cabeca != this->cauda)
+		cabeca = cabeca->getNext();
+}
+
+template <typename T>
+bool ListaLigada<T>::InsereNoInicio(T _valor) {
+	auto novo = make_shared<Node<T>>(_valor);
+	if (!novo) return false;
+
+	novo->setNext(this->cabeca);
+	this->cabeca = novo;
+	this->tamanho++;
+	return true;
+}
+
+template <typename T>
+bool ListaLigada<T>::InsereNoFinal(T _valor) {
+	if (this->cabeca == nullptr) {
+		return InsereNoInicio(_valor);
+	} else {
+		auto atual = this->cabeca;
+		while (atual->getNext() != this->cauda)
+			atual = atual->getNext();
+		
+		auto novo = make_shared<Node<T>>(_valor);
+		if (!novo) return false;
+
+		atual->setNext(novo);
+		novo->setNext(this->cauda);
+		this->tamanho++;
+	}
+	return true;
+}
+
+template <typename T>
+bool ListaLigada<T>::InsereNaPosicao(int pos, T _valor) {
+	if (pos<0) return false;
+	if (pos==0)	return InsereNoInicio(_valor);
+
+	auto atual = this->cabeca;
+	int posAtual = 0;
+	while (atual->getNext() != this->cauda && posAtual < pos-1) {
+		atual = atual->getNext();
+		posAtual++;
+	}
+	
+	auto novo = make_shared<Node<T>>(_valor);
+	if (!novo) return false;
+
+	novo->setNext(atual->getNext());
+	atual->setNext(novo);
+	this->tamanho++;
+	
+	return true;
+}
+
+template <typename T>
+bool ListaLigada<T>::RemoveNoInicio() {
+	if (this->cabeca==nullptr) return false;
+	cabeca = cabeca->getNext();
+	this->tamanho--;
+	return true;
+}
+
+template <typename T>
+bool ListaLigada<T>::RemoveNoFinal() {
+	if (this->cabeca==nullptr) return false;
+
+	if (this->cabeca->getNext()==this->cauda) {
+		this->cabeca = this->cauda;
+		this->tamanho--;
+		return true;
+	}
+
+	auto atual = this->cabeca;
+	while (atual->getNext()->getNext() != this->cauda)
+		atual = atual->getNext();
+	atual->setNext(this->cauda);
+	this->tamanho--;
+
+	return true;
+}
+
+template <typename T>
+bool ListaLigada<T>::RemoveNaPosicao(int pos) {
+	if (pos<0) return false;
+	if (pos==0)	return RemoveNoInicio();
+
+	auto atual = this->cabeca;
+	int posAtual = 0;
+	while (atual->getNext()->getNext() != this->cauda && posAtual < (pos-1)) {
+		atual = atual->getNext();
+		posAtual++;
+	}
+
+	atual->setNext(atual->getNext()->getNext());
+	this->tamanho--;
+
+	return true;
+}
+
+template <typename T>
+int ListaLigada<T>::size() {
+	return this->tamanho;
+}
+
+template <typename T>
+std::ostream& operator<< ( std::ostream& o, ListaLigada<T> const &l) {
+	auto atual = l.cabeca;
+
+	while (atual != l.cauda) {
+		o << atual->getValor() << " ";
+		atual = atual->getNext();
+	}
+
+	return o;
+}
+
+template <typename T>
+bool ListaLigada<T>::vazia() {
+	return tamanho <= 0;
+}
+
+#endif
