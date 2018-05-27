@@ -1,5 +1,9 @@
+#ifndef LISTA_H
+#define LISTA_H
+
 #include <iostream>
 #include <memory>
+#include "node.h"
 
 using namespace std;
 
@@ -28,7 +32,8 @@ public:
 	virtual bool RemoveNoInicio();
 	virtual bool RemoveNoFinal();
 	virtual bool RemoveNaPosicao(int pos);
-
+	
+	bool vazia();
 	int size();
 
 	friend std::ostream& operator<< <T>( std::ostream&, ListaLigada<T> const &l);
@@ -148,9 +153,18 @@ int ListaLigada<T>::size() {
 template <typename T>
 std::ostream& operator<< ( std::ostream& o, ListaLigada<T> const &l) {
 	auto atual = l.cabeca;
+
 	while (atual != l.cauda) {
 		o << atual->getValor() << " ";
 		atual = atual->getNext();
 	}
+
 	return o;
 }
+
+template <typename T>
+bool ListaLigada<T>::vazia() {
+	return tamanho <= 0;
+}
+
+#endif

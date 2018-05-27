@@ -1,9 +1,8 @@
-#ifndef LCE_H
-#define LCE_H
+#ifndef FC_H
+#define FC_H
 
 #include <memory>
 #include <iostream>
-#include "node.h"
 
 using namespace std;
 /* Implementacao da classe FilaCircular */
@@ -19,9 +18,7 @@ std::ostream& operator<<( std::ostream&, FilaCircular<T> const & );
 template <typename T>
 class FilaCircular {
 private:
-	shared_ptr<Node<T>> inicio;
-	shared_ptr<Node<T>> final;
-	int tamanho;
+	shared_ptr<FilaCircular<T>> lista;
 public:
 	FilaCircular();
 	~FilaCircular();
@@ -34,78 +31,50 @@ public:
 };
 
 template <typename T>
-FilaCircular<T>::FilaCircular(): inicio(nullptr), final(nullptr), tamanho(0) {}
+FilaCircular<T>::FilaCircular() {
+
+}
 
 template <typename T>
 FilaCircular<T>::~FilaCircular() {
-	while (inicio != this->final)
-		inicio = inicio->getNext();
+	
 }
 
 template <typename T>
 bool FilaCircular<T>::Inserir(T _valor) {
-
-
-	if (this->inicio == nullptr) {
-		return InsereNoInicio(_valor);
-	} else {
-		auto atual = this->inicio;
-
-		for(int i = 0; i < tamanho-1; i++)
-			atual = atual->getNext(); 
-				
-		auto novo = make_shared<Node<T>>(_valor);
-		if (!novo) return false;
-
-		atual->setNext(novo);
-		this->final = novo;
-		final->setNext(this->inicio);
-		this->tamanho++;
-	}
-
-	return true;
+	if(lista.InserirNoFinal(_valor))
+		return true;
+	else
+		return false;
 }
 
 template <typename T>
-bool FilaCircular<T>::RemoveNoFinal() {
-	if (this->inicio==nullptr) return false;
-
-	if (this->inicio->getNext()==this->final) {
-		this->inicio = this->final;
-		this->tamanho--;
+bool FilaCircular<T>::Remover() {
+	if(lista.RemoveNoFinal()){
 		return true;
+		cout << "tá no if";
 	}
-
-	auto atual = this->inicio;
-	while (atual->getNext()->getNext() != this->final)
-		atual = atual->getNext();
-
-	this->final = atual->getNext();
-	atual->setNext(this->final);
-
-	this->tamanho--;
-
-	return true;
+		
+	else
+		return false;
 }
 
 template <typename T>
 bool FilaCircular<T>::vazia() {
-	return tamanho == 0;
+	if(lista.vazia())
+		return true;
+	else
+		return false;
 }
 
 template <typename T>
 int FilaCircular<T>::size() {
-	return this->tamanho;
+	return lista.size();
 }
 
 template <typename T>
 std::ostream& operator<< ( std::ostream& o, FilaCircular<T> const &l) {
-	auto atual = l.inicio;
-
-	for(int i = 0; i < l.tamanho; i++){
-		o << atual->getValor() << " ";
-		atual = atual->getNext();
-	}		
+	o << l;
 
 	return o;
 }
