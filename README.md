@@ -1,4 +1,6 @@
-<h1>Laboratório 4 - Disciplina de Linguagem de Programação 1</h1>
+<h1>Laboratório 4</h1>
+<h3>Disciplina: Linguagem de Programação 1</h3>
+ 
 
 Instituto Metrópole Digital / UFRN | 2018.1
 
