@@ -1,10 +1,10 @@
 Cada executável corresponde a uma questão do Laboratório 4 de Linguagem de Programação 1
 
 para analisar a questão 1 do laboratório, basta executar:
-	./programa1
+	./prog1
 
 para analisar a questão 2 do laboratório, basta executar:
-	./programa2
+	./prog2
 
 para analisar a questão 3 do laboratório, basta executar:
-	./programa3
+	./prog3
