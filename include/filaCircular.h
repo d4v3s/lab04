@@ -3,6 +3,12 @@
 
 #include <memory>
 #include <iostream>
+#include "listaCircular.h"
+
+/**
+ * @file    filaCircular.h
+ * @brief   Cabeçalho e implementação da classe FilaCircular
+*/
 
 using namespace std;
 /* Implementacao da classe FilaCircular */
@@ -18,8 +24,8 @@ std::ostream& operator<<( std::ostream&, FilaCircular<T> const & );
 template <typename T>
 class FilaCircular {
 private:
-	shared_ptr<FilaCircular<T>> lista;
-public:
+	ListaCircular<T> lista; /*!< A lista circular é usada como container para a fila */
+public: 
 	FilaCircular();
 	~FilaCircular();
 	bool Inserir(T _valor);
@@ -40,41 +46,42 @@ FilaCircular<T>::~FilaCircular() {
 	
 }
 
+/**Método de inserir valores à fila (enfileirar)*/
 template <typename T>
 bool FilaCircular<T>::Inserir(T _valor) {
-	if(lista.InserirNoFinal(_valor))
+	if(lista.InsereNoFinal(_valor))
 		return true;
 	else
 		return false;
 }
 
+/**Método de remover valores da fila (desenfileirar)*/
 template <typename T>
 bool FilaCircular<T>::Remover() {
-	if(lista.RemoveNoFinal()){
+	if(lista.RemoveNoInicio()){
 		return true;
-		cout << "tá no if";
 	}
 		
 	else
 		return false;
 }
 
+/**Método para verificação se a lista está vazia*/
 template <typename T>
 bool FilaCircular<T>::vazia() {
-	if(lista.vazia())
-		return true;
-	else
-		return false;
+	return lista.vazia();
 }
 
+/**Método que informa o tamanho da fila*/
 template <typename T>
 int FilaCircular<T>::size() {
 	return lista.size();
 }
 
+/**Sobrecarga do operador de inserção*/
 template <typename T>
 std::ostream& operator<< ( std::ostream& o, FilaCircular<T> const &l) {
-	o << l;
+	o << l.lista;
 
 	return o;
 }

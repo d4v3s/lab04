@@ -7,6 +7,11 @@
 
 using namespace std;
 
+/**
+ * @file    listaCircular.h
+ * @brief   Cabeçalho e implementação da classe ListaCircular
+*/
+
 /* Implementacao da classe ListaCircular */
 
 /* Para permitir sobrecarregar o operador de insercao
@@ -22,7 +27,6 @@ class ListaCircular : public ListaLigada <T>{
 private:
 	shared_ptr<Node<T>> cabeca;
 	shared_ptr<Node<T>> cauda;
-	int tamanho;
 public:
 	ListaCircular();
 	~ListaCircular();
@@ -37,7 +41,7 @@ public:
 };
 
 template <typename T>
-ListaCircular<T>::ListaCircular(): cabeca(nullptr), cauda(nullptr), tamanho(0) {
+ListaCircular<T>::ListaCircular(): cabeca(nullptr), cauda(nullptr){
 	ListaLigada<T>();
 }
 
@@ -50,6 +54,7 @@ ListaCircular<T>::~ListaCircular() {
 	}
 
 	cauda->setNext(nullptr);
+	cabeca->setNext(nullptr);
 		
 }
 
@@ -60,14 +65,18 @@ bool ListaCircular<T>::InsereNoInicio(T _valor) {
 	auto novo = make_shared<Node<T>>(_valor);
 	if (!novo) return false;
 
-	novo->setNext(this->cabeca);
+	if(ListaLigada<T>::tamanho == 0)
+		novo->setNext(nullptr);	
+	else
+		novo->setNext(this->cabeca);
+	
 	this->cabeca = novo;
-	this->tamanho++;
+	ListaLigada<T>::tamanho++;
 
 	auto atual = cabeca;  /*!< Auxiliar para percorrer a lista */
 
 	/** @brief Procura o ultimo valor da lista*/
-	for(int i = 0; i < tamanho-1; i++){
+	for(int i = 0; i < ListaLigada<T>::tamanho-1; i++){
 		atual = atual->getNext(); 
 	}
 
@@ -85,14 +94,15 @@ bool ListaCircular<T>::InsereNoFinal(T _valor) {
 	} else {
 		auto atual = this->cabeca;
 
-		for(int i = 0; i < tamanho-1; i++)
+		/** @brief Procura o ultimo valor da lista*/
+		for(int i = 0; i < ListaLigada<T>::tamanho-1; i++)
 			atual = atual->getNext(); 
 				
 		auto novo = make_shared<Node<T>>(_valor);
 		if (!novo) return false;
 
 		atual->setNext(novo);
-		this->cauda = novo;
+		this->cauda = novo; /*!< o novo valor adicionado se torna a cauda da lista */
 		cauda->setNext(this->cabeca);
 		this->tamanho++;
 	}
@@ -105,9 +115,9 @@ template <typename T>
 bool ListaCircular<T>::InsereNaPosicao(int pos, T _valor) {
 	if (pos<0) return false;
 	if (pos==0)	return InsereNoInicio(_valor);
-	if (pos==tamanho) return InsereNoFinal(_valor);
+	if (pos==ListaLigada<T>::tamanho) return InsereNoFinal(_valor);
 
-	if (pos > tamanho) return false;
+	if (pos > ListaLigada<T>::tamanho) return false;
 
 	auto atual = this->cabeca;
 	int posAtual = 0;
@@ -121,7 +131,7 @@ bool ListaCircular<T>::InsereNaPosicao(int pos, T _valor) {
 
 	novo->setNext(atual->getNext());
 	atual->setNext(novo);
-	this->tamanho++;
+	this->ListaLigada<T>::tamanho++;
 
 	return true;
 }
@@ -131,8 +141,21 @@ template <typename T>
 bool ListaCircular<T>::RemoveNoInicio() {
 	if(!ListaLigada<T>::vazia()){
 		if (this->cabeca==nullptr) return false;
-		cabeca = cabeca->getNext();
-		this->tamanho--;
+		
+		this->cabeca = cabeca->getNext();		
+		this->cauda->setNext(cabeca);
+
+		if(ListaLigada<T>::tamanho == 2){
+			cabeca->setNext(nullptr);			
+			cauda == nullptr;
+		}
+
+		ListaLigada<T>::tamanho--;
+
+
+		
+		cout << "Removeu no inicio" << endl;
+
 		return true;
 	}else
 		return false;
@@ -145,8 +168,10 @@ bool ListaCircular<T>::RemoveNoFinal() {
 		if (this->cabeca==nullptr) return false;
 
 		if (this->cabeca->getNext()==this->cauda) {
-			this->cabeca = this->cauda;
-			this->tamanho--;
+
+			this->cauda = cauda->getNext();
+			this->cauda->setNext(this->cauda);
+			ListaLigada<T>::tamanho--;
 			return true;
 		}
 
@@ -157,7 +182,7 @@ bool ListaCircular<T>::RemoveNoFinal() {
 		this->cauda = atual->getNext();
 		atual->setNext(this->cauda);
 
-		this->tamanho--;
+		ListaLigada<T>::tamanho--;
 
 		return true;
 	}else
@@ -170,9 +195,9 @@ bool ListaCircular<T>::RemoveNaPosicao(int pos) {
 	if(!ListaLigada<T>::vazia()){
 		if (pos<0) return false;
 		if (pos==0)	return RemoveNoInicio();
-		if (pos==tamanho-1) return RemoveNoFinal();
+		if (pos==ListaLigada<T>::tamanho-1) return RemoveNoFinal();
 
-		if (pos > tamanho-1) return false;
+		if (pos > ListaLigada<T>::tamanho-1) return false;
 
 		auto atual = this->cabeca;
 		int posAtual = 0;
@@ -182,7 +207,7 @@ bool ListaCircular<T>::RemoveNaPosicao(int pos) {
 		}
 
 		atual->setNext(atual->getNext()->getNext());
-		this->tamanho--;
+		ListaLigada<T>::tamanho--;
 
 		return true;
 	}else
@@ -194,7 +219,7 @@ template <typename T>
 std::ostream& operator<< ( std::ostream& o, ListaCircular<T> const &l) {
 	auto atual = l.cabeca;
 
-	for(int i = 0; i < l.tamanho; i++){	
+	for(int i = 0; i < l.ListaLigada<T>::tamanho; i++){	
 		o << "-Elemento " << i+1 << ": " <<atual->getValor() << endl;
 		atual = atual->getNext();
 	}		

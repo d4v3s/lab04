@@ -22,6 +22,7 @@ class ListaLigada {
 private:
 	shared_ptr<Node<T>> cabeca;
 	shared_ptr<Node<T>> cauda;
+protected:
 	int tamanho;
 public:
 	ListaLigada();
