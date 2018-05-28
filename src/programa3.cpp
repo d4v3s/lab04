@@ -1,6 +1,10 @@
+/**
+ * @file    programa3.cpp
+ * @brief   Implementação dos testes e menus, além da execução do programa da questão 3
+*/
+
 #include "listaCircular.h"
 #include "filaCircular.h"
-#include "node.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -70,7 +74,6 @@ int programa3ListaAutomatico(){
 
 int programa3FilaAutomatico(){
 
-	shared_ptr<FilaCircular<int>> filaCircularInt(new FilaCircular<int>);
 	shared_ptr<FilaCircular<string>> filaCircularStr(new FilaCircular<string>);
 
 	cout << ">Testando a fila com 'STRINGS'" << endl;
@@ -99,6 +102,8 @@ int programa3FilaAutomatico(){
 	filaCircularStr->Remover();
 	cout << *filaCircularStr << endl;
 	cout << endl;
+
+	shared_ptr<FilaCircular<int>> filaCircularInt(new FilaCircular<int>);
 	
 	cout << ">Testando a lista com 'INTEIROS'" << endl;
 	for(int i = 4; i > 0; i--){
@@ -304,11 +309,7 @@ void menuProg3(){
 			break;
 			case 4:
 				programa3FilaManual();
-				system("clear");				
-			break;
-			case 5:
-				//system("clear");
-			break;
+				system("clear");									
 			}
 
 		if(op != 1 && op != 2 && op != 3 && op != 4 && op != 5) cout << "Operação inválida" << endl;

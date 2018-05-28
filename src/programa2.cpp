@@ -1,3 +1,8 @@
+/**
+ * @file    programa2.cpp
+ * @brief   Implementação dos testes e menus, além da execução do programa da questão 2
+*/
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -66,9 +71,7 @@ void menuProg2(){
 			case 2:
 				system("clear");
 				programa2Manual();
-			break;
-			case 3:
-				system("clear");
+
 		}
 
 		if(op != 1 && op != 2 && op != 3) cout << "Operação inválida" << endl;
