@@ -1,17 +1,15 @@
-#include "programa1.h"
 #include <cstdlib>
+#include <iostream>
+#include <string>
+#include <memory>
+#include "palindroma.h"
 
 using namespace std;
 
-Programa1::Programa1(){
-	p = make_shared<Palindroma>();
-}
+int programa1Automatico(){
+	shared_ptr<Palindroma>p;
+	string str;
 
-Programa1::~Programa1(){
-
-}
-
-int Programa1::programa1Automatico(){
 	cout << ">Testando com a palavra 'carro'" << endl;
 	str = "carro";
 
@@ -34,7 +32,10 @@ int Programa1::programa1Automatico(){
 	return 0;
 }
 
-int Programa1::programa1Manual(){
+int programa1Manual(){
+	shared_ptr<Palindroma>p;
+	string str;
+
 	cout << "Por favor insira uma palavra: ";
 	cin >> str;
 
@@ -48,13 +49,13 @@ int Programa1::programa1Manual(){
 	return 0;
 }
 
-void Programa1::menuProg1(){
+void menuProg1(){
 	short op;
 
 	do{
 		cout << "Digite '1' para testar automaticamente" << endl;
 		cout << "Digite '2' para testar manualmente" << endl;
-		cout << "Digite '3' para voltar" << endl;
+		cout << "Digite '3' para sair" << endl;
 		cout << ">Opção: ";
 		cin >> op;
 		cout << endl;
@@ -75,4 +76,10 @@ void Programa1::menuProg1(){
 		if(op != 1 && op != 2 && op != 3) cout << "Operação inválida" << endl;
 
 	}while(op !=3);
+}
+
+int main(){
+	menuProg1();
+
+	return 0;
 }

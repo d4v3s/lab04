@@ -1,17 +1,15 @@
-#include "programa2.h"
 #include <cstdlib>
+#include <iostream>
+#include <string>
+#include <memory>
+#include "rpn.h"
 
 using namespace std;
 
-Programa2::Programa2(){
-	calc = make_shared<Rpn>();
-}
+int programa2Automatico(){
+	string expressao;
+	shared_ptr<Rpn>calc;
 
-Programa2::~Programa2(){
-	
-}
-
-int Programa2::programa2Automatico(){
 	expressao = "5 3 * 2 * 10 /";
 	cout << ">Operação realizada: " << expressao << endl;
 	int result = calc->resolver(expressao);
@@ -29,8 +27,9 @@ int Programa2::programa2Automatico(){
 	return 0;
 }
 
-int Programa2::programa2Manual(){
+int programa2Manual(){
 	string expressao;
+	shared_ptr<Rpn>calc;
 
 	cout << "-Exemplo: '5 3 * 2 * 10 /'" << endl;
 	cout << ">Por favor insira uma expressão:";
@@ -48,13 +47,13 @@ int Programa2::programa2Manual(){
 	return 0;	
 }
 
-void Programa2::menuProg2(){
+void menuProg2(){
 	short op;
 
 	do{
 		cout << "Digite '1' para testar automaticamente" << endl;
 		cout << "Digite '2' para testar manualmente" << endl;
-		cout << "Digite '3' para voltar" << endl;
+		cout << "Digite '3' para sair" << endl;
 		cout << ">Opção: ";
 		cin >> op;
 		cout << endl;
@@ -75,4 +74,10 @@ void Programa2::menuProg2(){
 		if(op != 1 && op != 2 && op != 3) cout << "Operação inválida" << endl;
 
 	}while(op !=3);
+}
+
+int main(){
+	menuProg2();
+
+	return 0;
 }
