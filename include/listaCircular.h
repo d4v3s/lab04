@@ -48,13 +48,12 @@ ListaCircular<T>::ListaCircular(): cabeca(nullptr), cauda(nullptr){
 template <typename T>
 ListaCircular<T>::~ListaCircular() {
 
-	while (cabeca != this->cauda){
-		cauda->setNext(cabeca->getNext());
+	while (cabeca != cauda){
 		cabeca = cabeca->getNext();
 	}
 
-	cauda->setNext(nullptr);
-	cabeca->setNext(nullptr);
+	cauda = nullptr;
+	cabeca = nullptr;
 		
 }
 
@@ -92,6 +91,9 @@ bool ListaCircular<T>::InsereNoFinal(T _valor) {
 	if (this->cabeca == nullptr) {
 		return InsereNoInicio(_valor);
 	} else {
+
+		if(ListaLigada<T>::vazia()) return InsereNoInicio(_valor);
+
 		auto atual = this->cabeca;
 
 		/** @brief Procura o ultimo valor da lista*/
@@ -145,26 +147,19 @@ bool ListaCircular<T>::RemoveNoInicio() {
 		this->cabeca = cabeca->getNext();		
 		this->cauda->setNext(cabeca);
 
-		if(ListaLigada<T>::tamanho == 2){
-			cabeca->setNext(nullptr);			
-			cauda == nullptr;
-		}
-
 		ListaLigada<T>::tamanho--;
 
-
-		
-		cout << "Removeu no inicio" << endl;
-
 		return true;
-	}else
+	}else{
 		return false;
+	}
 }
 
 template <typename T>
 /**Sobrecarga do método de remoção no final da fila*/
 bool ListaCircular<T>::RemoveNoFinal() {
 	if(!ListaLigada<T>::vazia()){
+		//if (ListaLigada<T>::tamanho == 1) return RemoveNoInicio();
 		if (this->cabeca==nullptr) return false;
 
 		if (this->cabeca->getNext()==this->cauda) {
